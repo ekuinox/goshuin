@@ -37,11 +37,11 @@ export const FacilityView = ({ facility }: Props) => {
             <p>{facility.kind}</p>
             <p>lat: {facility.coordinate.lat}</p>
             <p>lon: {facility.coordinate.lon}</p>
-            {facility.goshuinList.map((goshuin) => (
-                <img width='30%' src={goshuin.pictureUrls[0]} />
+            {facility.goshuinList.map((goshuin, i) => (
+                <img key={i} width='30%' src={goshuin.pictureUrls[0]} />
             ))}
-            {facility.attachments && facility.attachments.map((attachment) => (
-                <img width='30%' src={attachment.mediaUrl} />
+            {facility.attachments && facility.attachments.map((attachment, i) => (
+                <img key={i} width='30%' src={attachment.mediaUrl} />
             ))}
         </p>
     );

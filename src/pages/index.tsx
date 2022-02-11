@@ -1,35 +1,31 @@
+import dynamic from 'next/dynamic';
 import { GetStaticProps } from "next";
-import Link from 'next/link';
+import { Facility } from "../../lib/facility";
 
 export interface Props {
-    ids: Array<string>;
+    facilities: Array<Facility>;
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-    const { getFacilityIds } = await import('../../lib/facility');
+    const { getFacilityIds, getFacility } = await import('../../lib/facility');
     const ids = await getFacilityIds();
-
+    const facilities = await Promise.all(ids.map(getFacility));
     return {
         props: {
-            ids,
+            facilities,
         },
     };
 };
 
-const Index = ({ ids }: Props) => {
+const Map = dynamic(
+    async () => import('../components/map').then(({ Map }) => Map),
+    { ssr: false }
+);
+
+const Index = ({ facilities }: Props) => {
     return (
         <div>
-            <ul>
-                {ids.map((id) => (
-                    <li key={id}>
-                        <Link
-                            href={`/facilities/${id}`}
-                        >
-                            {id}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+            <Map facilities={facilities} />
         </div>
     );
 };

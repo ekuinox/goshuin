@@ -1,4 +1,4 @@
-import z from 'zod';
+import * as z from 'zod';
 
 // 座標
 export const degreeType = z.number();
@@ -20,7 +20,7 @@ export const goshuinType = z.object({
     pictureUrls: z.array(z.string()).min(1),
 
     // 説明文 (なくても良し)
-    description: z.string().nullable(),
+    description: z.string().nullable().or(z.undefined()),
 
     // 日付文字列
     date: z.string(), // このまま `new Date()` に食わせる
@@ -65,9 +65,23 @@ export const facilityType = z.object({
     goshuinList: z.array(goshuinType),
 
     // メモ
-    memo: z.string().nullable(),
+    memo: z.string().nullable().or(z.undefined()),
 
     // 付属物
-    attachments: z.array(attachmentType).nullable(),
+    attachments: z.array(attachmentType).nullable().or(z.undefined()),
 });
 export type Facility = z.infer<typeof facilityType>;
+
+const idsType = z.array(z.string());
+
+// idをすべて取得する
+export const getFacilityIds = async (): Promise<Array<string>> => {
+    const { default: ids } = await import('../lib/facilities.json');
+    return idsType.parse(ids);
+};
+
+// 一件取得する
+export const getFacility = async (id: string): Promise<Facility> => {
+    const { default: facility } = await import(`../lib/facilities/${id}.json`);
+    return facilityType.parse(facility);
+};

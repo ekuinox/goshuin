@@ -20,7 +20,7 @@ Icon.Default.mergeOptions({
 });
 
 const DEFAULT_CENTER: LatLngExpression = [34.677578, 135.415826]; // 大阪市
-const DEFAULT_ZOOM = 13;
+const DEFAULT_ZOOM = 10;
 
 export interface MapProps {
     facilities: Array<Facility>;

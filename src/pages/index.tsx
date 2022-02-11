@@ -19,14 +19,18 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 const Index = ({ ids }: Props) => {
     return (
         <div>
-            {ids.map((id) => (
-                <Link
-                    key={id}
-                    href={`/facilities/${id}`}
-                >
-                    {id}
-                </Link>
-            ))}
+            <ul>
+                {ids.map((id) => (
+                    <li>
+                        <Link
+                            key={id}
+                            href={`/facilities/${id}`}
+                        >
+                            {id}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

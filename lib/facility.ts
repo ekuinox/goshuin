@@ -85,6 +85,6 @@ export const getFacilityIds = async (): Promise<Array<string>> => {
 
 // 一件取得する
 export const getFacility = async (id: string): Promise<Facility> => {
-    const { default: facility } = await import(`../lib/facilities/${id}.json`);
+    const { default: facility } = await import(`../facilities/${id}.json`);
     return facilityType.parse(facility);
 };

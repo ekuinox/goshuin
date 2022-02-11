@@ -4,6 +4,9 @@ import * as z from 'zod';
 export const degreeType = z.number();
 export type Degree = z.infer<typeof degreeType>;
 
+// 日付
+export const dateType = z.string();
+
 // 緯度経度
 export const coordinateType = z.object({
     // 緯度
@@ -23,7 +26,7 @@ export const goshuinType = z.object({
     description: z.string().nullable().or(z.undefined()),
 
     // 日付文字列
-    date: z.string(), // このまま `new Date()` に食わせる
+    date: dateType,
 });
 export type Goshuin = z.infer<typeof goshuinType>;
 
@@ -43,7 +46,7 @@ export const attachmentType = z.object({
     mediaUrl: z.string(),
     
     // 日付
-    date: z.string(),
+    date: dateType,
 });
 export type Attachment = z.infer<typeof attachmentType>;
 

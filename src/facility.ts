@@ -21,6 +21,9 @@ export const goshuinType = z.object({
 
     // 説明文 (なくても良し)
     description: z.string().nullable(),
+
+    // 日付文字列
+    date: z.string(), // このまま `new Date()` に食わせる
 });
 export type Goshuin = z.infer<typeof goshuinType>;
 
@@ -33,6 +36,16 @@ export const facilityKindType = z.union([
     z.literal('shrine'),
 ]);
 export type FacilityKind = z.infer<typeof facilityKindType>;
+
+// 貰ったパンフだとかをくっつける
+export const attachmentType = z.object({
+    // 画像か何かのURL
+    mediaUrl: z.string(),
+    
+    // 日付
+    date: z.string(),
+});
+export type Attachment = z.infer<typeof attachmentType>;
 
 // 宗教施設
 export const facilityType = z.object({
@@ -50,5 +63,11 @@ export const facilityType = z.object({
 
     // 御朱印のリスト
     goshuinList: z.array(goshuinType),
+
+    // メモ
+    memo: z.string().nullable(),
+
+    // 付属物
+    attachments: z.array(attachmentType).nullable(),
 });
 export type Facility = z.infer<typeof facilityType>;

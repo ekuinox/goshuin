@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { Grid } from '@mui/material';
+import { LatLngExpression, Icon } from 'leaflet';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { Facility } from "../../lib/facility";
-import { useEffect } from 'react';
-import { LatLngExpression, Icon } from 'leaflet';
 import "leaflet/dist/leaflet.css";
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -45,15 +46,27 @@ const FacilityMarker = ({ facility: { id, name, coordinate, goshuinList } }: { f
     return (
         <Marker key={id} position={[coordinate.lat, coordinate.lon]}>
             <Popup>
-                <Link href={`/facilities/${id}`}>
-                    {name}
-                </Link>
-                {goshuinList.length > 0 && (
-                    <img
-                        width='100px'
-                        src={goshuinList[0].pictureUrls[0]}
-                    />
-                )}
+                <Grid
+                    container
+                    direction='column'
+                    alignItems='center'
+                >
+                    <Grid item>
+                        <Link
+                            href={`/facilities/${id}`}
+                        >
+                            {name}
+                        </Link>
+                    </Grid>
+                    {goshuinList.length > 0 && (
+                        <Grid item>
+                            <img
+                                width='100px'
+                                src={goshuinList[0].pictureUrls[0]}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
             </Popup>
         </Marker>
     );

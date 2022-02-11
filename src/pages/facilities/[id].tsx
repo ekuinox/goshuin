@@ -40,7 +40,7 @@ export const FacilityView = ({ facility }: Props) => {
             {facility.goshuinList.map((goshuin) => (
                 <img width='30%' src={goshuin.pictureUrls[0]} />
             ))}
-            {facility.attachments.map((attachment) => (
+            {facility.attachments && facility.attachments.map((attachment) => (
                 <img width='30%' src={attachment.mediaUrl} />
             ))}
         </p>

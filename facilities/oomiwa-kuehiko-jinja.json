@@ -1,0 +1,16 @@
+{
+    "id": "oomiwa-kuehiko-jinja",
+    "name": "久延彦神社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.5321429,
+        "lon": 135.85028
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_6326.jpg"],
+            "description": "",
+            "date": "2021-10-24"
+        }
+    ]
+}

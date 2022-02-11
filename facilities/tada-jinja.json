@@ -1,0 +1,26 @@
+{
+    "id": "tada-jinja",
+    "name": "多田神社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.8605386,
+        "lon": 135.4056165
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_6328.jpg"],
+            "description": "",
+            "date": "2022-02-11"
+        }
+    ],
+    "attachments": [
+        {
+            "mediaUrl": "/images/IMG_6329.jpg",
+            "date": "2022-02-11"
+        },
+        {
+            "mediaUrl": "/images/IMG_6330.jpg",
+            "date": "2022-02-11"
+        }
+    ]
+}

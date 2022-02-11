@@ -1,0 +1,16 @@
+{
+    "id": "hirose-tasiha",
+    "name": "廣瀬大社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.5913983,
+        "lon": 135.7483875
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_6327.jpg"],
+            "description": "",
+            "date": "2021-10-24"
+        }
+    ]
+}

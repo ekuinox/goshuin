@@ -1,0 +1,16 @@
+{
+    "id": "oomiwa-sai-jinja",
+    "name": "狭井坐大神荒魂神社(狭井神社)",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.5307735,
+        "lon": 135.8540654
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_6325.jpg"],
+            "description": "",
+            "date": "2021-10-24"
+        }
+    ]
+}

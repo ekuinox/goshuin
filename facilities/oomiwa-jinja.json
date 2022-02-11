@@ -1,0 +1,16 @@
+{
+    "id": "oomiwa-jinja",
+    "name": "大神神社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.5287664,
+        "lon": 135.852895
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_6324.jpg"],
+            "description": "",
+            "date": "2021-10-24"
+        }
+    ]
+}

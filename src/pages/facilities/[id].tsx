@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { ParsedUrlQuery } from "querystring";
-import { Grid, Typography } from '@mui/material';
+import { useCallback, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from "next";
+import { Grid, Typography, Modal, Box } from '@mui/material';
 import { Facility } from "../../../lib/facility";
 
 export interface Props {
@@ -33,6 +34,39 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 };
 
 const IMAGE_WIDTH = '300px';
+
+const Img = ({ width, src }: {
+    width: string;
+    src: string;
+}) => {
+    const [isOpened, setOpen] = useState(false);
+    const handleOpen = useCallback(() => setOpen(true), [setOpen]);
+    const handleClose = useCallback(() => setOpen(false), [setOpen]);
+
+    return (
+        <>
+            <img
+                width={width}
+                onClick={handleOpen}
+                src={src}
+            />
+            <Modal
+                open={isOpened}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box>
+                    <img
+                        onClick={handleOpen}
+                        src={src}
+                        height='800px'
+                    />
+                </Box>
+            </Modal>
+        </>
+    );
+};
 
 export const FacilityView = ({ facility }: Props) => {
     return (
@@ -81,7 +115,7 @@ export const FacilityView = ({ facility }: Props) => {
                                 item
                                 key={url}
                             >
-                                <img
+                                <Img
                                     width={IMAGE_WIDTH}
                                     src={url}
                                 />
@@ -98,7 +132,7 @@ export const FacilityView = ({ facility }: Props) => {
                 >
                     {facility.attachments.map((attachment, i) => (
                         <Grid item key={attachment.mediaUrl} >
-                            <img
+                            <Img
                                 width={IMAGE_WIDTH}
                                 src={attachment.mediaUrl}
                             />

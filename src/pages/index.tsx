@@ -1,5 +1,5 @@
+import dynamic from 'next/dynamic';
 import { GetStaticProps } from "next";
-import Link from 'next/link';
 import { Facility } from "../../lib/facility";
 
 export interface Props {
@@ -17,20 +17,15 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     };
 };
 
+const Map = dynamic(
+    async () => import('../components/map').then(({ Map }) => Map),
+    { ssr: false }
+);
+
 const Index = ({ facilities }: Props) => {
     return (
         <div>
-            <ul>
-                {facilities.map(({ id, name }) => (
-                    <li key={id}>
-                        <Link
-                            href={`/facilities/${id}`}
-                        >
-                            {name}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+            <Map facilities={facilities} />
         </div>
     );
 };

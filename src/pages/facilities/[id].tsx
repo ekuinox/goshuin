@@ -13,7 +13,7 @@ export interface Params extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
     const { getFacilityIds } = await import('../../../lib/facility');
     const ids = await getFacilityIds();
-    const paths = ids.map((id) => ({ params: { id }}));
+    const paths = ids.map((id) => ({ params: { id } }));
     return {
         paths,
         fallback: false,
@@ -34,7 +34,15 @@ export const FacilityView = ({ facility }: Props) => {
     return (
         <p>
             <p>{facility.name}</p>
-            <img src={facility.goshuinList[0].pictureUrls[0]} />
+            <p>{facility.kind}</p>
+            <p>lat: {facility.coordinate.lat}</p>
+            <p>lon: {facility.coordinate.lon}</p>
+            {facility.goshuinList.map((goshuin) => (
+                <img width='30%' src={goshuin.pictureUrls[0]} />
+            ))}
+            {facility.attachments.map((attachment) => (
+                <img width='30%' src={attachment.mediaUrl} />
+            ))}
         </p>
     );
 };

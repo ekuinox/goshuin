@@ -21,9 +21,8 @@ const Index = ({ ids }: Props) => {
         <div>
             <ul>
                 {ids.map((id) => (
-                    <li>
+                    <li key={id}>
                         <Link
-                            key={id}
                             href={`/facilities/${id}`}
                         >
                             {id}

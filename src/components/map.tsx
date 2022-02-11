@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { Grid } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { LatLngExpression, Icon } from 'leaflet';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { Facility } from "../../lib/facility";

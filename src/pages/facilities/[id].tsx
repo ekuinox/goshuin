@@ -1,8 +1,12 @@
 import Link from 'next/link';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
 import { ParsedUrlQuery } from "querystring";
 import { useCallback, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from "next";
-import { Grid, Typography, Modal, Box } from '@mui/material';
+
 import { Facility } from "../../../lib/facility";
 
 export interface Props {

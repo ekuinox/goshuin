@@ -1,3 +1,6 @@
+mod facility;
+
+use facility::Facility;
 use octocrab::{models::repos::Object, params::repos::Reference, Octocrab};
 
 #[tokio::main]
@@ -20,13 +23,13 @@ async fn main() -> octocrab::Result<()> {
     let content = octocrab
         .repos("ekuinox", "goshuin")
         .get_content()
-        .path("hello_1")
+        .path("facilities/hirose-taisha.json")
         .r#ref(sha)
         .send()
         .await?;
 
     let item = content.items.first().expect("msg");
-    let mut content = item
+    let content = item
         .content
         .to_owned()
         .and_then(|c| {
@@ -42,23 +45,9 @@ async fn main() -> octocrab::Result<()> {
         .unwrap_or_default();
     println!("{}", content);
 
-    content += "hello world\n";
+    let facility = serde_json::from_str::<Facility>(&content);
 
-    let repo = octocrab.repos("ekuinox", "goshuin");
-    let a = repo
-        .update_file("hello_1", "append hello", content, item.sha.to_owned())
-        .branch("deploy-1")
-        .send()
-        .await;
-    println!("{:?}", a);
+    println!("{:#?}", facility);
 
     Ok(())
-}
-
-#[test]
-fn a() {
-    println!("{:?}", base64::encode("hello world").bytes());
-
-    let bytes = base64::decode("aGVsbG8gd29ybGQK").unwrap();
-    println!("{:?}", bytes);
 }

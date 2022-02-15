@@ -1,9 +1,9 @@
 mod facility;
 
-use anyhow::Result;
+use anyhow::{bail, Result};
 use dotenv::dotenv;
 use facility::Facility;
-use octocrab::{models::repos::Object, params::repos::Reference, Octocrab};
+use octocrab::{models::repos::Object, params::repos::Reference, repos::RepoHandler, Octocrab};
 use serenity::{
     async_trait,
     model::{channel::Message, gateway::Ready, id::UserId},
@@ -26,16 +26,75 @@ impl Handler {
     }
 }
 
+struct GoshuinRepositoryClient<'a> {
+    octocrab: &'a Octocrab,
+    repo: RepoHandler<'a>,
+    reference: Reference,
+}
+
+fn decode_content(c: String) -> Result<String> {
+    // 改行コードが 60 文字区切りで入っているので消していく
+    let c = c
+        .chars()
+        .into_iter()
+        .filter(|c| *c != '\n')
+        .collect::<String>();
+    let decoded = base64::decode(c)?;
+    let decoded = String::from_utf8(decoded)?;
+    Ok(decoded)
+}
+
+impl<'a> GoshuinRepositoryClient<'a> {
+    pub fn new(
+        octocrab: &'a Octocrab,
+        owner: String,
+        repo: String,
+        branch: String,
+    ) -> GoshuinRepositoryClient<'a> {
+        GoshuinRepositoryClient {
+            octocrab,
+            repo: octocrab.repos(owner, repo),
+            reference: Reference::Branch(branch.into()),
+        }
+    }
+
+    pub async fn get_facility(&self, id: String) -> Result<Facility> {
+        let refs = self.repo.get_ref(&self.reference).await?;
+
+        let sha = match refs.object {
+            Object::Commit { sha, .. } => sha,
+            Object::Tag { sha, .. } => sha,
+            _ => bail!("err"),
+        };
+
+        let path = format!("facilities/{}.json", id);
+
+        let content = self.repo.get_content().path(path).r#ref(sha).send().await?;
+        let facility = match content
+            .items
+            .first()
+            .and_then(|content| content.content.as_ref())
+        {
+            Some(content) => serde_json::from_str::<Facility>(&content)?,
+            None => bail!("none"),
+        };
+
+        Ok(facility)
+    }
+}
+
 #[async_trait]
 impl EventHandler for Handler {
     async fn message(&self, _ctx: Context, message: Message) {
         if message.author.id != self.admin_id {
             return;
         }
-        
-        if !message.content.starts_with("!goshuin") {
+
+        let args = message.content.split(' ').collect::<Vec<&str>>();
+        if args.get(0).map(|cmd| *cmd != "!goshuin").unwrap_or(true) {
             return;
         }
+        let args = args.into_iter().skip(1).collect::<Vec<&str>>();
 
         println!("{:#?}", message);
     }

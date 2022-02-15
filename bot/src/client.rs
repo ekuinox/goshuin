@@ -45,7 +45,10 @@ impl GoshuinRepositoryClient {
             .first()
             .and_then(|content| content.content.as_ref())
         {
-            Some(content) => serde_json::from_str::<Facility>(&content)?,
+            Some(content) => {
+                let content = decode_content(&content)?;
+                serde_json::from_str::<Facility>(&content)?
+            },
             None => bail!("none"),
         };
 
@@ -53,7 +56,7 @@ impl GoshuinRepositoryClient {
     }
 }
 
-fn decode_content(c: String) -> Result<String> {
+fn decode_content(c: &String) -> Result<String> {
     // 改行コードが 60 文字区切りで入っているので消していく
     let c = c
         .chars()

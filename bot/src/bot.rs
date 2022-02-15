@@ -1,6 +1,6 @@
+use crate::cli::Cli;
 use crate::client::GoshuinRepositoryClient;
 use crate::facility::Facility;
-use crate::cli::{Cli, Commands};
 use clap::Parser;
 use serenity::{
     async_trait,
@@ -35,7 +35,6 @@ impl EventHandler for Handler {
         if args.get(0).map(|cmd| *cmd != "!goshuin").unwrap_or(true) {
             return;
         }
-        let args = args.into_iter().skip(1).collect::<Vec<&str>>();
 
         dbg!(&args);
 
@@ -44,10 +43,10 @@ impl EventHandler for Handler {
             Err(e) => {
                 eprintln!("{:?}", e);
                 return;
-            },
+            }
         };
-        match cli.command {
-            Commands::GetCommand { id } => {
+        match cli {
+            Cli::GetSubcommand { id } => {
                 println!("{}", id);
                 let r = self.client.get_facility(id).await;
                 println!("{:#?}", r);

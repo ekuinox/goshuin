@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+use chrono::{Date, Utc};
 
 /// 宗教施設の種別
 #[derive(Serialize, Deserialize, Debug)]
@@ -22,6 +23,12 @@ pub struct Coordinate {
     lon: f64,
 }
 
+impl Coordinate {
+    pub fn new(lat: f64, lon: f64) -> Coordinate {
+        Coordinate { lat, lon }
+    }
+}
+
 /// 御朱印
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Goshuin {
@@ -36,6 +43,20 @@ pub struct Goshuin {
     date: String,
 }
 
+impl Goshuin {
+    pub fn new(
+        picture_urls: Vec<String>,
+        date: Date<Utc>,
+        description: Option<String>
+    ) -> Goshuin {
+        Goshuin {
+            description,            
+            picture_urls,
+            date: date.to_string(),
+        }
+    }
+}
+
 /// 付属物
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Attachment {
@@ -45,6 +66,18 @@ pub struct Attachment {
 
     /// 日付
     date: String,
+}
+
+impl Attachment {
+    pub fn new(
+        media_url: String,
+        date: Date<Utc>
+    ) -> Attachment {
+        Attachment {
+            media_url,
+            date: date.to_string(),
+        }
+    }
 }
 
 /// 宗教施設情報
@@ -71,6 +104,28 @@ pub struct Facility {
 
     /// 付属物
     attachments: Option<Vec<Attachment>>,
+}
+
+impl Facility {
+    pub fn new(
+        id: String,
+        name: String,
+        kind: FacilityKind,
+        coordinate: Coordinate,
+        goshuin_list: Vec<Goshuin>,
+        memo: Option<String>,
+        attachments: Option<Vec<Attachment>>
+    ) -> Facility {
+        Facility {
+            id,
+            name,
+            kind,
+            memo,
+            coordinate,
+            attachments,
+            goshuin_list,
+        }
+    }
 }
 
 #[test]

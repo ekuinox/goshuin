@@ -1,27 +1,43 @@
 mod facility;
 
+use anyhow::Result;
 use dotenv::dotenv;
 use facility::Facility;
 use octocrab::{models::repos::Object, params::repos::Reference, Octocrab};
 use serenity::{
     async_trait,
-    model::{channel::Message, gateway::Ready},
+    model::{channel::Message, gateway::Ready, id::UserId},
     prelude::*,
 };
-use std::env;
+use std::{env, str::FromStr};
 
-struct Handler;
+#[derive(Debug)]
+struct Handler {
+    admin_id: UserId,
+    facility: Option<Facility>,
+}
+
+impl Handler {
+    pub fn new(admin_id: UserId) -> Handler {
+        Handler {
+            admin_id,
+            facility: None,
+        }
+    }
+}
 
 #[async_trait]
 impl EventHandler for Handler {
-    async fn message(&self, ctx: Context, msg: Message) {
-        println!("{:#?}", msg);
-
-        if msg.content == "!ping" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sending message: {:?}", why);
-            }
+    async fn message(&self, _ctx: Context, message: Message) {
+        if message.author.id != self.admin_id {
+            return;
         }
+        
+        if !message.content.starts_with("!goshuin") {
+            return;
+        }
+
+        println!("{:#?}", message);
     }
 
     async fn ready(&self, _: Context, ready: Ready) {
@@ -30,13 +46,15 @@ impl EventHandler for Handler {
 }
 
 #[tokio::main]
-async fn main() -> octocrab::Result<()> {
+async fn main() -> Result<()> {
     dotenv().ok();
 
-    let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
+    let token = env::var("DISCORD_TOKEN")?;
+    let admin_id = env::var("ADMIN_ID")?;
+    let admin_id = UserId::from_str(&admin_id)?;
 
     let mut client = Client::builder(&token)
-        .event_handler(Handler)
+        .event_handler(Handler::new(admin_id))
         .await
         .expect("Err creating client");
 

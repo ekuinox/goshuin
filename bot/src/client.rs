@@ -28,7 +28,7 @@ impl GoshuinRepositoryClient {
         }
     }
 
-    pub async fn get_facility(&self, id: String) -> Result<Facility> {
+    pub async fn get_facility(&self, id: &String) -> Result<Facility> {
         let refs = self.get_repo().get_ref(&self.reference).await?;
 
         let sha = match refs.object {

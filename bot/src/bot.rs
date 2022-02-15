@@ -26,7 +26,7 @@ impl Handler {
 
 #[async_trait]
 impl EventHandler for Handler {
-    async fn message(&self, _ctx: Context, message: Message) {
+    async fn message(&self, ctx: Context, message: Message) {
         if message.author.id != self.admin_id {
             return;
         }
@@ -47,9 +47,18 @@ impl EventHandler for Handler {
         };
         match cli {
             Cli::GetSubcommand { id } => {
-                println!("{}", id);
-                let r = self.client.get_facility(id).await;
-                println!("{:#?}", r);
+                if let Ok(facility) = self.client.get_facility(&id).await {
+                    let json = match serde_json::to_string_pretty(&facility) {
+                        Ok(json) => json,
+                        Err(_) => return,
+                    };
+                    let _ = message.channel_id.say(&ctx.http, json).await;
+                } else {
+                    let _ = message
+                        .channel_id
+                        .say(&ctx.http, format!("{} is not found", id))
+                        .await;
+                }
             }
         }
     }

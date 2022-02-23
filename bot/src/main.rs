@@ -7,10 +7,48 @@ use anyhow::Result;
 use bot::{Data, A};
 use dotenv::dotenv;
 use octocrab::Octocrab;
-use serenity::{model::id::UserId, prelude::*};
-use std::{env, str::FromStr, sync::{Arc, Mutex}};
+use serenity::{
+    framework::standard::{
+        buckets::{LimitedFor, RevertBucket},
+        help_commands,
+        macros::{check, command, group, help, hook},
+        Args, CommandGroup, CommandOptions, CommandResult, DispatchError, HelpOptions, Reason,
+        StandardFramework,
+    },
+    model::{channel::Message, id::UserId},
+    prelude::*,
+};
+use std::{
+    env,
+    str::FromStr,
+    sync::{Arc, Mutex}, collections::HashSet,
+};
 
 use crate::{bot::Handler, client::GoshuinRepositoryClient};
+
+#[group]
+#[commands(test, test1)]
+struct General;
+
+#[command]
+#[required_permissions("ADMINISTRATOR")]
+async fn test(ctx: &Context, msg: &Message) -> CommandResult {
+    msg.channel_id
+        .say(&ctx.http, "This is a small test-bot! : )")
+        .await?;
+
+    Ok(())
+}
+
+#[command]
+#[required_permissions("ADMINISTRATOR")]
+async fn test1(ctx: &Context, msg: &Message) -> CommandResult {
+    msg.channel_id
+        .say(&ctx.http, "This is a small test1-bot! : )")
+        .await?;
+
+    Ok(())
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -29,7 +67,23 @@ async fn main() -> Result<()> {
     );
     let handler = Handler::new(admin_id, client);
 
+    let framework = StandardFramework::new()
+        .configure(|c| {
+            c.with_whitespace(true)
+                .on_mention(None)
+                .prefix("~")
+                // In this case, if "," would be first, a message would never
+                // be delimited at ", ", forcing you to trim your arguments if you
+                // want to avoid whitespaces at the start of each.
+                .delimiters(vec![", ", ","])
+                // Sets the bot's owners. These will be used for commands that
+                // are owners only.
+                .owners(HashSet::from_iter(vec![admin_id].into_iter()))
+        })
+        .group(&GENERAL_GROUP);
+
     let mut client = Client::builder(&discord_token)
+        .framework(framework)
         .event_handler(handler)
         .await
         .expect("Err creating client");

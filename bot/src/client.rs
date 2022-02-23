@@ -54,6 +54,39 @@ impl GoshuinRepositoryClient {
 
         Ok(facility)
     }
+
+    /// 新しいブランチを作成する
+    pub async fn create_branch(&self, name: String) -> Result<()> {
+        let refs = self.get_repo().get_ref(&self.reference).await?;
+        let sha = match refs.object {
+            Object::Commit { sha, .. } => sha,
+            Object::Tag { sha, .. } => sha,
+            _ => bail!("err"),
+        };
+        let _ = self.get_repo().create_ref(&Reference::Branch(name), sha).await?;
+        Ok(())
+    }
+
+    /// 新しくファイルを追加する
+    pub async fn write_facility(
+        &self,
+        facility: &Facility,
+        branch: String
+    ) -> Result<()> {
+        let path = format!("facilities/{}.json", facility.id);
+        let content = serde_json::to_vec(&facility)?;
+        let _ = self
+            .get_repo()
+            .create_file(
+                path,
+                format!("Update {}", facility.id),
+                content
+            )
+            .branch(branch)
+            .send()
+            .await?;
+        Ok(())
+    }
 }
 
 fn decode_content(c: &String) -> Result<String> {

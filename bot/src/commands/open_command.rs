@@ -14,11 +14,11 @@ use crate::editor::EditorData;
 
 #[command]
 #[required_permissions("ADMINISTRATOR")]
-pub async fn edit(ctx: &Context, msg: &Message) -> CommandResult {
-    edit_command(ctx, msg).await
+pub async fn open(ctx: &Context, msg: &Message) -> CommandResult {
+    open_command(ctx, msg).await
 }
 
-pub async fn edit_command(ctx: &Context, msg: &Message) -> CommandResult {
+pub async fn open_command(ctx: &Context, msg: &Message) -> CommandResult {
     let mut data = ctx.data.write().await;
     let mut editor = data.get_mut::<EditorData>().expect("Edito is None").lock().await;
     let args = msg.content.split(' ').skip(1).map(|s| s.to_string()).collect::<Vec<String>>();

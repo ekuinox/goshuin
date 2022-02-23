@@ -1,8 +1,8 @@
 mod create_command;
-mod edit_command;
+mod open_command;
 
 use create_command::*;
-use edit_command::*;
+use open_command::*;
 use serenity::{
     framework::standard::{
         buckets::{LimitedFor, RevertBucket},
@@ -16,5 +16,5 @@ use serenity::{
 };
 
 #[group]
-#[commands(create, edit)]
+#[commands(create, open)]
 pub struct General;

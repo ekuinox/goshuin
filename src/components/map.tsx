@@ -77,7 +77,7 @@ export const Map: React.FC<MapProps> = ({ facilities }) => {
         <MapContainer
             center={DEFAULT_CENTER}
             zoom={DEFAULT_ZOOM}
-            style={{ height: "80vh", width: "100%" }}
+            style={{ height: "98vh", width: "100%" }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

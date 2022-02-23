@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use crate::client::GoshuinRepositoryClient;
-use crate::facility::{Facility, FacilityKind, Coordinate, Goshuin};
-use anyhow::{Result, bail};
+use crate::facility::{Coordinate, Facility, FacilityKind, Goshuin};
+use anyhow::{bail, Result};
 use chrono::{Date, Utc};
 use serenity::prelude::*;
 
@@ -34,17 +34,9 @@ impl Editor {
         id: String,
         name: String,
         kind: FacilityKind,
-        coordinate: Coordinate
+        coordinate: Coordinate,
     ) -> &Facility {
-        let facility = Facility::new(
-            id,
-            name,
-            kind,
-            coordinate,
-            vec![],
-            None,
-            None
-        );
+        let facility = Facility::new(id, name, kind, coordinate, vec![], None, None);
         self.facility = Some(facility);
         self.facility.as_ref().unwrap()
     }
@@ -54,8 +46,31 @@ impl Editor {
         self.facility = None;
     }
 
+    /// 画像をコミットする
+    pub async fn create_image(&self, origin_url: &String, name: &String) -> Result<()> {
+        let facility = match &self.facility {
+            Some(facility) => facility,
+            None => bail!("facility is none"),
+        };
+        let branch_name = format!("deploy-{}", facility.id);
+
+        let existed = self.client.is_existed_branch(branch_name.clone()).await?;
+        if !existed {
+            self.client.create_branch(branch_name.clone()).await?;
+        }
+
+        let _ = self.client.write_image(origin_url, name, branch_name.clone()).await;
+
+        Ok(())
+    }
+
     /// 御朱印を拡張する
-    pub fn append_goshuin(&mut self, images: Vec<String>, date: Date<Utc>, desc: Option<String>) -> Result<()> {
+    pub fn append_goshuin(
+        &mut self,
+        images: Vec<String>,
+        date: String,
+        desc: Option<String>,
+    ) -> Result<()> {
         let facility = match &mut self.facility {
             Some(facility) => facility,
             None => bail!("facility is none"),
@@ -77,8 +92,11 @@ impl Editor {
         if !existed {
             self.client.create_branch(branch_name.clone()).await?;
         }
-        
-        let _ = self.client.write_facility(facility, branch_name.clone()).await?;
+
+        let _ = self
+            .client
+            .write_facility(facility, branch_name.clone())
+            .await?;
 
         Ok(())
     }

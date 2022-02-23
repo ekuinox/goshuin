@@ -68,8 +68,26 @@ impl GoshuinRepositoryClient {
         Ok(())
     }
 
-    pub async fn write_image(&self, origin_url: String, name: String) -> Result<()> {
-        todo!("")
+    pub async fn write_image(&self, origin_url: &String, name: &String, branch: String) -> Result<()> {
+        let path = format!("public/images/{}", name);
+        let content = reqwest::get(origin_url)
+            .await?
+            .bytes()
+            .await?
+            .into_iter()
+            .collect::<Vec<u8>>();
+
+        let _ = self
+            .get_repo()
+            .create_file(
+                path,
+                format!("Add {}", name),
+                content
+            )
+            .branch(branch)
+            .send()
+            .await?;
+        Ok(())
     }
 
     /// 新しくファイルを追加する

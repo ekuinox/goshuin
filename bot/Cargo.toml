@@ -17,3 +17,4 @@ serenity = { version = "0.10.10", default-features = false, features = ["framewo
 dotenv = "0.15.0"
 anyhow = "1.0.53"
 clap = { version = "3.0.14", features = ["derive"] }
+reqwest = "0.11.9"

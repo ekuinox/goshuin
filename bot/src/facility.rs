@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
-use serde::{Serialize, Deserialize};
 use chrono::{Date, Utc};
+use serde::{Deserialize, Serialize};
 
 /// 宗教施設の種別
 #[derive(Serialize, Deserialize, Debug)]
@@ -49,7 +49,7 @@ pub struct Goshuin {
     /// 画像のURL
     #[serde(rename = "pictureUrls")]
     pub picture_urls: Vec<String>,
-    
+
     /// 説明 メモとか
     pub description: Option<String>,
 
@@ -58,15 +58,11 @@ pub struct Goshuin {
 }
 
 impl Goshuin {
-    pub fn new(
-        picture_urls: Vec<String>,
-        date: Date<Utc>,
-        description: Option<String>
-    ) -> Goshuin {
+    pub fn new(picture_urls: Vec<String>, date: String, description: Option<String>) -> Goshuin {
         Goshuin {
-            description,            
+            description,
             picture_urls,
-            date: date.to_string(),
+            date,
         }
     }
 }
@@ -83,10 +79,7 @@ pub struct Attachment {
 }
 
 impl Attachment {
-    pub fn new(
-        media_url: String,
-        date: Date<Utc>
-    ) -> Attachment {
+    pub fn new(media_url: String, date: Date<Utc>) -> Attachment {
         Attachment {
             media_url,
             date: date.to_string(),
@@ -128,7 +121,7 @@ impl Facility {
         coordinate: Coordinate,
         goshuin_list: Vec<Goshuin>,
         memo: Option<String>,
-        attachments: Option<Vec<Attachment>>
+        attachments: Option<Vec<Attachment>>,
     ) -> Facility {
         Facility {
             id,

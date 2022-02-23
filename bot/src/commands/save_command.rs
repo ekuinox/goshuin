@@ -23,7 +23,7 @@ pub async fn save_command(ctx: &Context, msg: &Message) -> CommandResult {
             format!("saved")
         },
         Err(e) => {
-            let e = format!("{:#?}", e);
+            let e = format!("{:?}", e);
             eprintln!("{}", e);
             e
         }

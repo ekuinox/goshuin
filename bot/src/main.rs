@@ -6,22 +6,8 @@ mod facility;
 use anyhow::Result;
 use dotenv::dotenv;
 use octocrab::Octocrab;
-use serenity::{
-    framework::standard::{
-        buckets::{LimitedFor, RevertBucket},
-        help_commands,
-        macros::{check, command, group, help, hook},
-        Args, CommandGroup, CommandOptions, CommandResult, DispatchError, HelpOptions, Reason,
-        StandardFramework,
-    },
-    model::{channel::Message, id::UserId},
-    prelude::*,
-};
-use std::{
-    env,
-    str::FromStr,
-    sync::Arc, collections::HashSet,
-};
+use serenity::{framework::standard::StandardFramework, model::id::UserId, prelude::*};
+use std::{collections::HashSet, env, str::FromStr, sync::Arc};
 
 use crate::client::GoshuinRepositoryClient;
 use crate::commands::*;

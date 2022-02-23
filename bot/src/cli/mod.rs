@@ -1,18 +1,11 @@
-use crate::client::GoshuinRepositoryClient;
+mod edit_start_subcommand;
+mod context;
+
 use anyhow::Result;
 use clap::Parser;
 use serenity::model::channel::Message;
-
-#[derive(Parser, Debug)]
-pub struct EditStartSubcommand {
-    id: String,
-}
-
-impl EditStartSubcommand {
-    async fn run(&self, _ctx: &Context, _message: &Message) -> Result<()> {
-        Ok(())
-    }
-}
+pub use edit_start_subcommand::EditStartSubcommand;
+pub use context::Context;
 
 #[derive(Parser, Debug)]
 #[clap(about, version, author)]
@@ -21,16 +14,6 @@ pub enum Cli {
     GetSubcommand { id: String },
     #[clap(name = "edit-start")]
     EditStartSubcommand(EditStartSubcommand),
-}
-
-pub struct Context {
-    client: GoshuinRepositoryClient,
-}
-
-impl Context {
-    pub fn new(client: GoshuinRepositoryClient) -> Context {
-        Context { client }
-    }
 }
 
 impl Cli {

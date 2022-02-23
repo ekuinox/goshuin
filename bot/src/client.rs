@@ -1,5 +1,6 @@
-use crate::facility::Facility;
+use crate::facility::{Facility, Goshuin};
 use anyhow::{bail, Result};
+use chrono::{Date, Utc};
 use octocrab::{models::repos::Object, params::repos::Reference, repos::RepoHandler, Octocrab};
 
 pub struct GoshuinRepositoryClient {
@@ -67,6 +68,10 @@ impl GoshuinRepositoryClient {
         Ok(())
     }
 
+    pub async fn write_image(&self, origin_url: String, name: String) -> Result<()> {
+        todo!("")
+    }
+
     /// 新しくファイルを追加する
     pub async fn write_facility(
         &self,
@@ -86,6 +91,15 @@ impl GoshuinRepositoryClient {
             .send()
             .await?;
         Ok(())
+    }
+
+    /// ブランチが存在するか
+    pub async fn is_existed_branch(&self, name: String) -> Result<bool> {
+        let r#ref = self
+            .get_repo()
+            .get_ref(&Reference::Branch(name))
+            .await;
+        Ok(r#ref.is_ok()) // よくないこれ
     }
 }
 

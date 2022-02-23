@@ -2,7 +2,7 @@ use crate::editor::EditorData;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     model::channel::Message,
-    prelude::*, http::CacheHttp,
+    prelude::*,
 };
 
 #[command]

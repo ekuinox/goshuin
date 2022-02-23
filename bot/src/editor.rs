@@ -59,8 +59,10 @@ impl Editor {
             Some(facility) => facility,
             None => bail!("facility is none"),
         };
-        let branch_name = format!("deploy/{}", facility.id);
-        let _ = self.client.create_branch(branch_name.clone()).await;
+        let branch_name = format!("deploy-{}", facility.id);
+        if let Err(e) = self.client.create_branch(branch_name.clone()).await {
+            eprintln!("{:?}", e);
+        }
 
         let _ = self.client.write_facility(facility, branch_name.clone()).await?;
 

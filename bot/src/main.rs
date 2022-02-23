@@ -4,10 +4,11 @@ mod client;
 mod facility;
 
 use anyhow::Result;
+use bot::{Data, A};
 use dotenv::dotenv;
 use octocrab::Octocrab;
 use serenity::{model::id::UserId, prelude::*};
-use std::{env, str::FromStr};
+use std::{env, str::FromStr, sync::{Arc, Mutex}};
 
 use crate::{bot::Handler, client::GoshuinRepositoryClient};
 
@@ -32,6 +33,11 @@ async fn main() -> Result<()> {
         .event_handler(handler)
         .await
         .expect("Err creating client");
+
+    {
+        let mut data = client.data.write().await;
+        data.insert::<Data>(Arc::new(Mutex::new(A { a: "".to_string() })));
+    }
 
     if let Err(why) = client.start().await {
         println!("Client error: {:?}", why);

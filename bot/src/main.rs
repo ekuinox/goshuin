@@ -2,10 +2,10 @@ mod bot;
 mod cli;
 mod client;
 mod commands;
+mod editor;
 mod facility;
 
 use anyhow::Result;
-use bot::{Data, A};
 use dotenv::dotenv;
 use octocrab::Octocrab;
 use serenity::{
@@ -22,11 +22,12 @@ use serenity::{
 use std::{
     env,
     str::FromStr,
-    sync::{Arc, Mutex}, collections::HashSet,
+    sync::Arc, collections::HashSet,
 };
 
-use crate::{bot::Handler, client::GoshuinRepositoryClient};
+use crate::client::GoshuinRepositoryClient;
 use crate::commands::*;
+use crate::editor::{Editor, EditorData};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -43,8 +44,7 @@ async fn main() -> Result<()> {
         "goshuin".to_string(),
         "deploy".to_string(),
     );
-    let handler = Handler::new(admin_id, client);
-
+    let editor = Editor::new(client);
     let framework = StandardFramework::new()
         .configure(|c| {
             c.with_whitespace(true)
@@ -62,13 +62,12 @@ async fn main() -> Result<()> {
 
     let mut client = Client::builder(&discord_token)
         .framework(framework)
-        .event_handler(handler)
         .await
         .expect("Err creating client");
 
     {
         let mut data = client.data.write().await;
-        data.insert::<Data>(Arc::new(Mutex::new(A { a: "".to_string() })));
+        data.insert::<EditorData>(Arc::new(Mutex::new(editor)));
     }
 
     if let Err(why) = client.start().await {

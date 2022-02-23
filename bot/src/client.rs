@@ -29,8 +29,13 @@ impl GoshuinRepositoryClient {
         }
     }
 
-    pub async fn get_facility(&self, id: &String) -> Result<Facility> {
-        let refs = self.get_repo().get_ref(&self.reference).await?;
+    pub async fn get_facility(&self, id: &String, branch_name: String) -> Result<Facility> {
+        let reference = if self.is_existed_branch(branch_name.clone()).await? {
+            Reference::Branch(branch_name)
+        } else {
+            self.reference.to_owned()
+        };
+        let refs = self.get_repo().get_ref(&reference).await?;
 
         let sha = match refs.object {
             Object::Commit { sha, .. } => sha,

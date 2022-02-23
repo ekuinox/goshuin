@@ -22,7 +22,8 @@ impl Editor {
 
     /// id を元に新規 Facility を探す
     pub async fn open(&mut self, id: &String) -> Result<&Facility> {
-        let facility = self.client.get_facility(id).await?;
+        let branch_name = format!("deploy-{}", id);
+        let facility = self.client.get_facility(id, branch_name).await?;
         self.facility = Some(facility);
         let facility = self.facility.as_ref().unwrap();
         Ok(facility)

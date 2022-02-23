@@ -1,11 +1,11 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { ParsedUrlQuery } from "querystring";
-import { useCallback, useState } from 'react';
+import Typography from '@mui/material/Typography';
 import { GetStaticPaths, GetStaticProps } from "next";
-
 import { Facility } from "../../../lib/facility";
+
 
 export interface Props {
     facility: Facility;
@@ -53,77 +53,84 @@ const Img = ({ width, src }: {
 
 export const FacilityView = ({ facility }: Props) => {
     return (
-        <Grid
-            container
-            direction='column'
-        >
-            <Grid item>
-                <Typography variant='h3'>
+        <div>
+            <Head>
+                <title>
                     {facility.name}
-                </Typography>
-            </Grid>
-            <Grid item>
-                <Link href={`https://www.google.com/maps/search/${facility.coordinate.lat},${facility.coordinate.lon}`}>
-                    Google Maps
-                </Link>
-            </Grid>
-            {facility.memo && (
+                </title>
+            </Head>
+            <Grid
+                container
+                direction='column'
+            >
                 <Grid item>
-                    <Typography variant='body1'>
-                        {facility.memo}
+                    <Typography variant='h3'>
+                        {facility.name}
                     </Typography>
                 </Grid>
-            )}
-            {facility.goshuinList.map((goshuin, i) => (
-                <Grid
-                    key={i}
-                    container
-                    direction='column'
-                >
+                <Grid item>
+                    <Link href={`https://www.google.com/maps/search/${facility.coordinate.lat},${facility.coordinate.lon}`}>
+                        Google Maps
+                    </Link>
+                </Grid>
+                {facility.memo && (
                     <Grid item>
-                        {new Date(goshuin.date).toLocaleDateString()}
+                        <Typography variant='body1'>
+                            {facility.memo}
+                        </Typography>
                     </Grid>
-                    {goshuin.description && (
+                )}
+                {facility.goshuinList.map((goshuin, i) => (
+                    <Grid
+                        key={i}
+                        container
+                        direction='column'
+                    >
                         <Grid item>
-                            {goshuin.description}
+                            {new Date(goshuin.date).toLocaleDateString()}
                         </Grid>
-                    )}
+                        {goshuin.description && (
+                            <Grid item>
+                                {goshuin.description}
+                            </Grid>
+                        )}
+                        <Grid
+                            container
+                            direction='row'
+                            spacing={2}
+                        >
+                            {goshuin.pictureUrls.map((url) => (
+                                <Grid
+                                    item
+                                    key={url}
+                                >
+                                    <Img
+                                        width={IMAGE_WIDTH}
+                                        src={url}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Grid>
+                ))}
+                {facility.attachments && (
                     <Grid
                         container
                         direction='row'
                         spacing={2}
                     >
-                        {goshuin.pictureUrls.map((url) => (
-                            <Grid
-                                item
-                                key={url}
-                            >
+                        {facility.attachments.map((attachment, i) => (
+                            <Grid item key={attachment.mediaUrl} >
                                 <Img
                                     width={IMAGE_WIDTH}
-                                    src={url}
+                                    src={attachment.mediaUrl}
                                 />
                             </Grid>
                         ))}
                     </Grid>
-                </Grid>
-            ))}
-            {facility.attachments && (
-                <Grid
-                    container
-                    direction='row'
-                    spacing={2}
-                >
-                    {facility.attachments.map((attachment, i) => (
-                        <Grid item key={attachment.mediaUrl} >
-                            <Img
-                                width={IMAGE_WIDTH}
-                                src={attachment.mediaUrl}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-        </Grid>
+                )}
+            </Grid>
+        </div>
     );
 };
 

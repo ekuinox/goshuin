@@ -13,8 +13,12 @@ use serenity::{
 #[command]
 #[required_permissions("ADMINISTRATOR")]
 pub async fn edit(ctx: &Context, msg: &Message) -> CommandResult {
+    edit_command(ctx, msg).await
+}
+
+pub async fn edit_command(ctx: &Context, msg: &Message) -> CommandResult {
     msg.channel_id
-        .say(&ctx.http, "This is a small test-bot! : )")
+        .say(&ctx.http, "edit command unimplemented")
         .await?;
     Ok(())
 }

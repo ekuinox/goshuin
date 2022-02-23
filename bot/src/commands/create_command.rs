@@ -13,8 +13,12 @@ use serenity::{
 #[command]
 #[required_permissions("ADMINISTRATOR")]
 pub async fn create(ctx: &Context, msg: &Message) -> CommandResult {
+    create_command(ctx, msg).await
+}
+
+pub async fn create_command(ctx: &Context, msg: &Message) -> CommandResult {
     msg.channel_id
-        .say(&ctx.http, "This is a small test-bot! : )")
+        .say(&ctx.http, "create command unimplemented")
         .await?;
     Ok(())
 }

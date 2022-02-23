@@ -17,10 +17,10 @@ pub enum FacilityKind {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Coordinate {
     /// 緯度
-    lat: f64,
+    pub lat: f64,
 
     /// 経度
-    lon: f64,
+    pub lon: f64,
 }
 
 impl Coordinate {
@@ -34,13 +34,13 @@ impl Coordinate {
 pub struct Goshuin {
     /// 画像のURL
     #[serde(rename = "pictureUrls")]
-    picture_urls: Vec<String>,
+    pub picture_urls: Vec<String>,
     
     /// 説明 メモとか
-    description: Option<String>,
+    pub description: Option<String>,
 
     /// 日付
-    date: String,
+    pub date: String,
 }
 
 impl Goshuin {
@@ -62,10 +62,10 @@ impl Goshuin {
 pub struct Attachment {
     /// 画像のURL
     #[serde(rename = "mediaUrl")]
-    media_url: String,
+    pub media_url: String,
 
     /// 日付
-    date: String,
+    pub date: String,
 }
 
 impl Attachment {
@@ -84,26 +84,26 @@ impl Attachment {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Facility {
     /// id
-    id: String,
+    pub id: String,
 
     /// 施設の名前
-    name: String,
+    pub name: String,
 
     /// 種別
-    kind: FacilityKind,
+    pub kind: FacilityKind,
 
     /// 座標
-    coordinate: Coordinate,
+    pub coordinate: Coordinate,
 
     /// 御朱印のリスト
     #[serde(rename = "goshuinList")]
-    goshuin_list: Vec<Goshuin>,
+    pub goshuin_list: Vec<Goshuin>,
 
     /// なんかメモとか
-    memo: Option<String>,
+    pub memo: Option<String>,
 
     /// 付属物
-    attachments: Option<Vec<Attachment>>,
+    pub attachments: Option<Vec<Attachment>>,
 }
 
 impl Facility {

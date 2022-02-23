@@ -104,7 +104,7 @@ impl Editor {
     }
 
     /// 保持している Facility を取得する
-    pub async fn get_facility(&self) -> Option<&Facility> {
+    pub fn get_facility(&self) -> Option<&Facility> {
         self.facility.as_ref()
     }
 }

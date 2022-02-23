@@ -1,5 +1,3 @@
-mod bot;
-mod cli;
 mod client;
 mod commands;
 mod editor;

@@ -1,6 +1,7 @@
 mod bot;
 mod cli;
 mod client;
+mod commands;
 mod facility;
 
 use anyhow::Result;
@@ -25,30 +26,7 @@ use std::{
 };
 
 use crate::{bot::Handler, client::GoshuinRepositoryClient};
-
-#[group]
-#[commands(test, test1)]
-struct General;
-
-#[command]
-#[required_permissions("ADMINISTRATOR")]
-async fn test(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.channel_id
-        .say(&ctx.http, "This is a small test-bot! : )")
-        .await?;
-
-    Ok(())
-}
-
-#[command]
-#[required_permissions("ADMINISTRATOR")]
-async fn test1(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.channel_id
-        .say(&ctx.http, "This is a small test1-bot! : )")
-        .await?;
-
-    Ok(())
-}
+use crate::commands::*;
 
 #[tokio::main]
 async fn main() -> Result<()> {

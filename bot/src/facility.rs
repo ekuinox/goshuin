@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use serde::{Serialize, Deserialize};
 use chrono::{Date, Utc};
 
@@ -11,6 +13,18 @@ pub enum FacilityKind {
     /// 神社
     #[serde(rename = "shrine")]
     Shrine,
+}
+
+impl FromStr for FacilityKind {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let kind = match s {
+            "temple" => FacilityKind::Temple,
+            "shrine" => FacilityKind::Shrine,
+            _ => anyhow::bail!("err"),
+        };
+        Ok(kind)
+    }
 }
 
 /// 座標

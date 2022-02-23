@@ -1,7 +1,5 @@
 import Link from 'next/link';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import { ParsedUrlQuery } from "querystring";
 import { useCallback, useState } from 'react';
@@ -43,32 +41,13 @@ const Img = ({ width, src }: {
     width: string;
     src: string;
 }) => {
-    const [isOpened, setOpen] = useState(false);
-    const handleOpen = useCallback(() => setOpen(true), [setOpen]);
-    const handleClose = useCallback(() => setOpen(false), [setOpen]);
-
     return (
-        <>
+        <Link href={src}>
             <img
                 width={width}
-                onClick={handleOpen}
                 src={src}
             />
-            <Modal
-                open={isOpened}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box>
-                    <img
-                        onClick={handleOpen}
-                        src={src}
-                        height='800px'
-                    />
-                </Box>
-            </Modal>
-        </>
+        </Link>
     );
 };
 

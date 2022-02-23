@@ -10,7 +10,7 @@ use serenity::{
 };
 
 #[command]
-#[required_permissions("ADMINISTRATOR")]
+#[owners_only]
 pub async fn create(ctx: &Context, msg: &Message) -> CommandResult {
     create_command(ctx, msg).await
 }

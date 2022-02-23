@@ -6,7 +6,7 @@ use serenity::{
 };
 
 #[command]
-#[required_permissions("ADMINISTRATOR")]
+#[owners_only]
 pub async fn save(ctx: &Context, msg: &Message) -> CommandResult {
     save_command(ctx, msg).await
 }

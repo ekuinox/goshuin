@@ -6,7 +6,7 @@ use serenity::{
 };
 
 #[command]
-#[required_permissions("ADMINISTRATOR")]
+#[owners_only]
 pub async fn dump(ctx: &Context, msg: &Message) -> CommandResult {
     dump_command(ctx, msg).await
 }

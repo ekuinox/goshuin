@@ -7,7 +7,7 @@ use serenity::{
 };
 
 #[command]
-#[required_permissions("ADMINISTRATOR")]
+#[owners_only]
 pub async fn append_goshuin(ctx: &Context, msg: &Message) -> CommandResult {
     append_goshuin_command(ctx, msg).await
 }

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { GetStaticProps } from "next";
 import { Facility } from "../../lib/facility";
@@ -25,6 +26,11 @@ const Map = dynamic(
 const Index = ({ facilities }: Props) => {
     return (
         <div>
+            <Head>
+                <title>
+                    御朱印マップ
+                </title>
+            </Head>
             <Map facilities={facilities} />
         </div>
     );

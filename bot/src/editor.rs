@@ -75,6 +75,7 @@ impl Editor {
             Some(facility) => facility,
             None => bail!("facility is none"),
         };
+        let images = images.into_iter().map(|name| format!("/images/{}", name)).collect::<Vec<String>>();
         let goshuin = Goshuin::new(images, date, desc);
         facility.goshuin_list.push(goshuin);
         Ok(())

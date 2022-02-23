@@ -11,6 +11,7 @@ use serenity::{
 };
 
 use crate::editor::EditorData;
+use super::get_args;
 
 #[command]
 #[required_permissions("ADMINISTRATOR")]
@@ -20,9 +21,8 @@ pub async fn open(ctx: &Context, msg: &Message) -> CommandResult {
 
 pub async fn open_command(ctx: &Context, msg: &Message) -> CommandResult {
     let mut data = ctx.data.write().await;
-    let mut editor = data.get_mut::<EditorData>().expect("Edito is None").lock().await;
-    let args = msg.content.split(' ').skip(1).map(|s| s.to_string()).collect::<Vec<String>>();
-    dbg!(&args);
+    let mut editor = data.get_mut::<EditorData>().expect("Editor is None").lock().await;
+    let args = get_args(&msg.content);
     let reply= if let Ok(facility) = editor.open(&args[0]).await {
         format!("{} is found. name = {}", facility.id, facility.name)
     } else {

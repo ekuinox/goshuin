@@ -18,3 +18,7 @@ use serenity::{
 #[group]
 #[commands(create, open)]
 pub struct General;
+
+pub fn get_args(content: &String) -> Vec<String> {
+    content.split(' ').skip(1).map(|s| s.to_string()).collect::<Vec<String>>()
+}

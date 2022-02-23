@@ -1,13 +1,11 @@
+import Head from 'next/head';
 import Link from 'next/link';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
 import { ParsedUrlQuery } from "querystring";
-import { useCallback, useState } from 'react';
+import Typography from '@mui/material/Typography';
 import { GetStaticPaths, GetStaticProps } from "next";
-
 import { Facility } from "../../../lib/facility";
+
 
 export interface Props {
     facility: Facility;
@@ -43,108 +41,96 @@ const Img = ({ width, src }: {
     width: string;
     src: string;
 }) => {
-    const [isOpened, setOpen] = useState(false);
-    const handleOpen = useCallback(() => setOpen(true), [setOpen]);
-    const handleClose = useCallback(() => setOpen(false), [setOpen]);
-
     return (
-        <>
+        <Link href={src}>
             <img
                 width={width}
-                onClick={handleOpen}
                 src={src}
             />
-            <Modal
-                open={isOpened}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box>
-                    <img
-                        onClick={handleOpen}
-                        src={src}
-                        height='800px'
-                    />
-                </Box>
-            </Modal>
-        </>
+        </Link>
     );
 };
 
 export const FacilityView = ({ facility }: Props) => {
     return (
-        <Grid
-            container
-            direction='column'
-        >
-            <Grid item>
-                <Typography variant='h3'>
+        <div>
+            <Head>
+                <title>
                     {facility.name}
-                </Typography>
-            </Grid>
-            <Grid item>
-                <Link href={`https://www.google.com/maps/search/${facility.coordinate.lat},${facility.coordinate.lon}`}>
-                    Google Maps
-                </Link>
-            </Grid>
-            {facility.memo && (
+                </title>
+            </Head>
+            <Grid
+                container
+                direction='column'
+            >
                 <Grid item>
-                    <Typography variant='body1'>
-                        {facility.memo}
+                    <Typography variant='h3'>
+                        {facility.name}
                     </Typography>
                 </Grid>
-            )}
-            {facility.goshuinList.map((goshuin, i) => (
-                <Grid
-                    key={i}
-                    container
-                    direction='column'
-                >
+                <Grid item>
+                    <Link href={`https://www.google.com/maps/search/${facility.coordinate.lat},${facility.coordinate.lon}`}>
+                        Google Maps
+                    </Link>
+                </Grid>
+                {facility.memo && (
                     <Grid item>
-                        {new Date(goshuin.date).toLocaleDateString()}
+                        <Typography variant='body1'>
+                            {facility.memo}
+                        </Typography>
                     </Grid>
-                    {goshuin.description && (
+                )}
+                {facility.goshuinList.map((goshuin, i) => (
+                    <Grid
+                        key={i}
+                        container
+                        direction='column'
+                    >
                         <Grid item>
-                            {goshuin.description}
+                            {new Date(goshuin.date).toLocaleDateString()}
                         </Grid>
-                    )}
+                        {goshuin.description && (
+                            <Grid item>
+                                {goshuin.description}
+                            </Grid>
+                        )}
+                        <Grid
+                            container
+                            direction='row'
+                            spacing={2}
+                        >
+                            {goshuin.pictureUrls.map((url) => (
+                                <Grid
+                                    item
+                                    key={url}
+                                >
+                                    <Img
+                                        width={IMAGE_WIDTH}
+                                        src={url}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Grid>
+                ))}
+                {facility.attachments && (
                     <Grid
                         container
                         direction='row'
                         spacing={2}
                     >
-                        {goshuin.pictureUrls.map((url) => (
-                            <Grid
-                                item
-                                key={url}
-                            >
+                        {facility.attachments.map((attachment, i) => (
+                            <Grid item key={attachment.mediaUrl} >
                                 <Img
                                     width={IMAGE_WIDTH}
-                                    src={url}
+                                    src={attachment.mediaUrl}
                                 />
                             </Grid>
                         ))}
                     </Grid>
-                </Grid>
-            ))}
-            {facility.attachments && (
-                <Grid
-                    container
-                    direction='row'
-                    spacing={2}
-                >
-                    {facility.attachments.map((attachment, i) => (
-                        <Grid item key={attachment.mediaUrl} >
-                            <Img
-                                width={IMAGE_WIDTH}
-                                src={attachment.mediaUrl}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-        </Grid>
+                )}
+            </Grid>
+        </div>
     );
 };
 

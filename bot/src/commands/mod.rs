@@ -1,24 +1,12 @@
 mod create_command;
 mod open_command;
+mod save_command;
 
 use create_command::*;
 use open_command::*;
-use serenity::{
-    framework::standard::{
-        buckets::{LimitedFor, RevertBucket},
-        help_commands,
-        macros::{check, command, group, help, hook},
-        Args, CommandGroup, CommandOptions, CommandResult, DispatchError, HelpOptions, Reason,
-        StandardFramework,
-    },
-    model::{channel::Message, id::UserId},
-    prelude::*,
-};
+use save_command::*;
+use serenity::framework::standard::macros::group;
 
 #[group]
-#[commands(create, open)]
+#[commands(create, open, save)]
 pub struct General;
-
-pub fn get_args(content: &String) -> Vec<String> {
-    content.split(' ').skip(1).map(|s| s.to_string()).collect::<Vec<String>>()
-}

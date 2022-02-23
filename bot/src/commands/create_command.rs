@@ -40,7 +40,13 @@ pub async fn create_command(ctx: &Context, msg: &Message) -> CommandResult {
         .split(' ')
         .map(|s| s.to_string())
         .collect::<Vec<String>>();
-    let args = CreateArgs::try_parse_from(&args)?;
+    let args = match CreateArgs::try_parse_from(&args) {
+        Ok(args) => args,
+        Err(e) => {
+            eprintln!("{:#?}", e);
+            return Ok(());
+        }
+    };
 
     let facility = editor.create(
         args.id,

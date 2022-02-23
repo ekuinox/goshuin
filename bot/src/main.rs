@@ -17,6 +17,9 @@ use crate::editor::{Editor, EditorData};
 async fn main() -> Result<()> {
     dotenv().ok();
 
+    let github_repository_owner = env::var("GITHUB_REPOSITORY_OWNER")?;
+    let github_repository_name = env::var("GITHUB_REPOSITORY_NAME")?;
+    let github_deploy_branch_name = env::var("GITHUB_DEPLOY_BRANCH_NAME")?;
     let discord_token = env::var("DISCORD_TOKEN")?;
     let admin_id = env::var("ADMIN_ID")?;
     let admin_id = UserId::from_str(&admin_id)?;
@@ -24,9 +27,9 @@ async fn main() -> Result<()> {
     let octocrab = Octocrab::builder().personal_token(github_token).build()?;
     let client = GoshuinRepositoryClient::new(
         octocrab,
-        "ekuinox".to_string(),
-        "goshuin".to_string(),
-        "deploy".to_string(),
+        github_repository_owner,
+        github_repository_name,
+        github_deploy_branch_name,
     );
     let editor = Editor::new(client);
     let framework = StandardFramework::new()

@@ -1,0 +1,22 @@
+{
+    "id": "hujisan-hongu-sengen-taisha",
+    "name": "富士山本宮浅間大社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 35.227406,
+        "lon": 138.610003
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_7600.jpg"],
+            "description": "",
+            "date": "2022-05-08"
+        }
+    ],
+    "attachments": [
+        {
+            "mediaUrl": "/images/B23DB9D7-19F1-4D97-ACD8-B4C3F9C49AF9.jpg",
+            "date": "2022-05-08"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "nagi-jinja",
+    "name": "梛神社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 35.00336032926485,
+        "lon": 135.74412130155218
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_7599.jpg"],
+            "description": "",
+            "date": "2022-02-26"
+        }
+    ]
+}

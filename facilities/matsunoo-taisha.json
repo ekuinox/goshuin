@@ -1,0 +1,16 @@
+{
+    "id": "matsunoo-taisha",
+    "name": "松尾大社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.999964,
+        "lon": 135.685172 
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/IMG_7603.jpg"],
+            "description": "",
+            "date": "2022-02-26"
+        }
+    ]
+}

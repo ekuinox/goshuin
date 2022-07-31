@@ -1,0 +1,26 @@
+{
+    "id": "mangetsuji",
+    "name": "満月寺",
+    "kind": "temple",
+    "coordinate": {
+        "lat": 35.109825,
+        "lon": 135.920975
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/9C0E09EB-6700-4123-A51C-EEDCC1523F60.jpeg"],
+            "description": "",
+            "date": "2022-07-30"
+        }
+    ],
+    "attachments": [
+        {
+            "mediaUrl": "/images/6C1A9E03-8138-430B-B04A-29E039D64305.jpeg",
+            "date": "2022-07-30"
+        },
+        {
+            "mediaUrl": "/images/55C1CDD2-02C6-43CF-A698-2876D3BD67AC.jpeg",
+            "date": "2022-07-30"
+        }
+    ]
+}

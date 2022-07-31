@@ -1,0 +1,16 @@
+{
+    "id": "izu-jinja",
+    "name": "伊豆神社",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 35.111176,
+        "lon": 135.920822
+    },
+    "goshuinList": [
+        {
+            "pictureUrls": ["/images/A2EDED7B-82DE-4C0D-82C2-D2199C4EEEFE.jpeg"],
+            "description": "",
+            "date": "2022-07-30"
+        }
+    ]
+}

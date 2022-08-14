@@ -1,0 +1,20 @@
+{
+    "id": "kyoto-shoujuin",
+    "name": "正寿院",
+    "kind": "shrine",
+    "coordinate": {
+        "lat": 34.8498378,
+        "lon": 135.9185468
+    },
+    "goshuinList": [],
+    "attachments": [
+        {
+            "mediaUrl": "/images/44039D2E-8972-4731-B45A-3816D5A37B30.jpeg",
+            "date": "2022-08-13"
+        },
+        {
+            "mediaUrl": "/images/25C1B962-C49F-4D63-B599-9A9993050142.jpeg",
+            "date": "2022-08-13"
+        }
+    ]
+}
